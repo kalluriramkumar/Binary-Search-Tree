@@ -115,88 +115,107 @@ class BinaryTree{
 
         Node ParentNode = root;
         Node DeleteNode = root;
-
+        
+        if(data == DeleteNode.getData() && DeleteNode.getLeft() == null && DeleteNode.getRight() == null){
+            root = null;
+        }
+        
         while(data != DeleteNode.getData()){
 
             ParentNode = DeleteNode;
 
-            if(data < DeleteNode.getData()){
+            if(data <= DeleteNode.getData()){
 
                 DeleteNode = DeleteNode.getLeft();
+
+                if(DeleteNode == null){
+                    break;
+                }
             }
             else{
 
                 DeleteNode = DeleteNode.getRight();
+
+                if(DeleteNode == null){
+                    break;
+                }
             }
         }
 
-        /* Deleting Node when no children */
 
-        if(DeleteNode.getLeft() == null && DeleteNode.getRight() == null){
+        if(DeleteNode != null){
 
-            if(data < ParentNode.getData()){
+            /* Deleting Node when no children */
 
-                ParentNode.left = null;
-            }
-            else{
+            if(DeleteNode.getLeft() == null && DeleteNode.getRight() == null){
 
-                ParentNode.right = null;
-            }
+                if(data < ParentNode.getData()){
 
-        }
-
-        /* Deleting Node when having one child */
-
-        if(DeleteNode.getLeft() == null || DeleteNode.getRight() == null){
-
-            if(data < ParentNode.getData()){
-
-                if(DeleteNode.getLeft() != null){
-
-                    ParentNode.setLeft(DeleteNode.getLeft());
+                    ParentNode.left = null;
                 }
                 else{
 
-                    ParentNode.setLeft(DeleteNode.getRight());
+                    ParentNode.right = null;
                 }
+
             }
-            else{
 
-                if(DeleteNode.getLeft() != null){
+            /* Deleting Node when having one child */
 
-                    ParentNode.setRight(DeleteNode.getLeft());
+            if(DeleteNode.getLeft() == null || DeleteNode.getRight() == null){
+
+                if(data < ParentNode.getData()){
+
+                    if(DeleteNode.getLeft() != null){
+
+                        ParentNode.setLeft(DeleteNode.getLeft());
+                    }
+                    else{
+
+                        ParentNode.setLeft(DeleteNode.getRight());
+                    }
                 }
                 else{
-                    ParentNode.setRight(DeleteNode.getRight());
+
+                    if(DeleteNode.getLeft() != null){
+
+                        ParentNode.setRight(DeleteNode.getLeft());
+                    }
+                    else{
+                        ParentNode.setRight(DeleteNode.getRight());
+                    }
                 }
             }
+
+            /* Deleting Node when having two children */
+
+            if(DeleteNode.getLeft() != null && DeleteNode.getRight() != null){
+
+                Node temp = DeleteNode.getRight();
+
+                if(temp.getLeft() != null){
+                    while(temp.getLeft().getLeft() != null){
+
+                        temp = temp.getLeft();
+                    }
+
+                    DeleteNode.setData(temp.getLeft().getData());
+                    if(temp.getLeft().getRight() != null){
+                        temp.setLeft(temp.getLeft().getRight());
+                    }
+                }
+                else{
+
+                    DeleteNode.setData(temp.getData());
+                    DeleteNode.right = null;
+                }
+            }
+
+
         }
-
-        /* Deleting Node when having two children */
-
-        if(DeleteNode.getLeft() != null && DeleteNode.getRight() != null){
-
-            Node temp = DeleteNode.getRight();
-
-            if(temp.getLeft() != null){
-                while(temp.getLeft().getLeft() != null){
-
-                    temp = temp.getLeft();
-                }
-
-                DeleteNode.setData(temp.getLeft().getData());
-                if(temp.getLeft().getRight() != null){
-                    temp.setLeft(temp.getLeft().getRight());
-                }
-            }
-            else{
-
-                DeleteNode.setData(temp.getData());
-                DeleteNode.right = null;
-            }
-
-
-
+        else
+        {
+            System.out.println("Entered Number does not exist");
         }
     }
 
@@ -218,12 +237,12 @@ class BinaryTree{
 
         BinaryTree btree = new BinaryTree();
         Scanner sc = new Scanner(System.in);
-        
+
         System.out.println("Choose among the following 1. Insert 2. Delete 3. Print");
         int choice = sc.nextInt();
 
         do{
-            
+
             switch(choice){
 
             case 1 :
@@ -250,7 +269,7 @@ class BinaryTree{
                 break;
 
             }
-            
+
             System.out.println("Enter your Choice");
             choice = sc.nextInt();
         }while(choice != 0);
